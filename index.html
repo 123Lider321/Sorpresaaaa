@@ -35,43 +35,25 @@
   <script src="./script.js"></script>
   <script>
     window.onload = function() {
-      // Agregar evento de clic al body
-      document.body.addEventListener('click', function() {
-        // Aplicar fade-out
-        document.body.classList.add('fade-out');
-
-        // Después de que el fade-out termine, cargar el nuevo contenido
+      // Ejecutar la animación primero
+      // Por ejemplo, puedes usar una función para iniciar la animación
+  
+      // Después de que la animación haya terminado, aplicar el efecto de desvanecimiento
+      setTimeout(function() {
+        document.body.classList.add('fade-out'); // Añadir la clase para desvanecer
         setTimeout(function() {
-          fetch('index2.html') // Cambia la ruta si es necesario
-            .then(response => {
-              if (!response.ok) {
-                throw new Error('Error al cargar el archivo');
-              }
-              return response.text();
-            })
-            .then(html => {
-              // Crear un elemento temporal para parsear el HTML
-              const tempDiv = document.createElement('div');
-              tempDiv.innerHTML = html;
-
-              // Extraer el contenido del body de index2.html
-              const newContent = tempDiv.querySelector('body').innerHTML;
-
-              // Reemplazar el contenido actual con el nuevo
-              document.body.innerHTML = newContent;
-
-              // Aplicar fade-in al nuevo contenido
-              setTimeout(() => {
-                document.body.classList.add('fade-in');
-                document.body.style.opacity = 1;
-              }, 10); // Pequeño retraso para asegurar que el contenido se renderice
-            })
-            .catch(err => {
-              console.error('Error loading content:', err);
-              alert('Hubo un error al cargar el contenido. Verifica la consola para más detalles.');
-            });
-        }, 1000); // Esperar a que termine la animación de fade-out
-      });
+          const xhr = new XMLHttpRequest();
+          xhr.open('GET', 'index2.html', true);
+          xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+              document.open();
+              document.write(xhr.responseText);
+              document.close();
+            }
+          };
+          xhr.send();
+        }, 1000); // Esperar 1 segundo antes de cargar la segunda página
+      }, 5000); // Esperar 5 segundos, ajusta este valor según la duración de tu animación
     };
   </script>
 </body>
